@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RBAC</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RBAC</a>
+                @if (!string.IsNullOrEmpty(ViewBag.CurrentUser) && !string.IsNullOrEmpty(ViewBag.CurrentUserId))
+                {
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav justify-content-end">
+                            @{
+                                List<RBAC_CoreMVC.DTOs.MenuDto> menus = ViewBag.CurrentMenu;
+                                if (menus != null)
+                                {
+                                    foreach (var menu in menus)
+                                    {
+                                        @:<li class="nav-item">
+                                            @:<a class="nav-link" href="@menu.MenuUrl">@menu.MenuName</a>
+                                        @:</li>
+                                    }
+                                }
+                            }
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="ddUser" role="button" data-toggle="dropdown" aria-expanded="false">
+                                    @ViewBag.CurrentUser
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="ddUser">
+                                    <a class="dropdown-item" asp-controller="User" asp-action="ChangeMyUserInfo" asp-route-id="@ViewBag.CurrentUserId">个人中心</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-controller="Login" asp-action="Logout">退出</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - 基于角色的权限管理系统（RBAC）
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

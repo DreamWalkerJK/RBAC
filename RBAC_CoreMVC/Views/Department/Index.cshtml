@@ -1,0 +1,95 @@
+﻿@model PagedList<RBAC_CoreMVC.Models.Department>
+
+@{
+    ViewData["Title"] = "部门管理";
+}
+
+<h1 class="text-center">部门列表</h1>
+
+<div class="row">
+    <form asp-controller="Department" asp-action="Index" class="form-inline" method="get">
+        <div class="form-group col">
+            <label for="departmentName">名称：</label>
+            <input id="departmentName" name="departmentName" type="text" value="@ViewBag.CurrentName" class="form-control" />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" value="查询" class="btn btn-success" />
+        </div>
+    </form>
+    <a type="button" class="btn btn-primary" asp-action="Create">新建</a>
+</div>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                名称
+            </th>
+            <th>
+                联系电话
+            </th>
+            <th>
+                备注
+            </th>
+            <th>
+                创建时间
+            </th>
+            <th>
+                更新时间
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactNumber)
+                </td>
+                <td>
+                    <span class="d-inline-block text-truncate" style="max-width: 100px;">
+                        @Html.DisplayFor(model => item.Remarks)
+                    </span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateTime)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">编辑</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div style="display:flex;">
+    <div style="margin: auto;">
+        @{
+            var prevDisabled = !Model.hasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.hasNextPage ? "disabled" : "";
+        }
+
+        <a asp-action="Index"
+           asp-route-page="@(Model.pageIndex - 1)"
+           asp-route-currentName="@ViewBag.CurrentName"
+           class="btn btn-primary @prevDisabled">
+            上一页
+        </a>
+        &nbsp;&nbsp;@Model.pageIndex &nbsp;/ &nbsp; @Model.totalPages 页&nbsp;&nbsp;
+        <a asp-action="Index"
+           asp-route-page="@(Model.pageIndex + 1)"
+           asp-route-currenName="@ViewBag.CurrentName"
+           class="btn btn-primary @nextDisabled">
+            下一页
+        </a>
+
+    </div>
+</div>

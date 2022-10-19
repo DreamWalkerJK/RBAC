@@ -1,0 +1,78 @@
+﻿@model RBAC_CoreMVC.Models.User
+
+@{
+    ViewData["Title"] = "编辑用户";
+}
+
+<h1 class="text-center">编辑 @Model.Code</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Code" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartmentId" class="control-label"></label>
+                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Remarks" class="control-label"></label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="selectedRole" class="control-label">用户角色</label>
+                @{
+                    int count = 0;
+                    List<RBAC_CoreMVC.DTOs.RoleDto> roles = ViewBag.RoleList;
+
+                    if (roles != null)
+                    {
+                        foreach (var role in roles)
+                        {
+                            if (count++ % 4 == 0)
+                            {
+                                @:<br />
+                            }
+                            <input type="checkbox"
+                                   name="selectedRole"
+                                   value="@role.RoleId"
+                                   @(Html.Raw(role.IsSelected ? "checked=\"checked\"" : "")) /> @:  @role.RoleName
+                            }
+                        }
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="保存" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">返回列表</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
