@@ -366,11 +366,20 @@ namespace RBAC_CoreMVC.Controllers
             return _context.Users.Any(e => e.Id == id);
         }
 
+        /// <summary>
+        /// 检查用户编码是否存在
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <returns></returns>
         private bool UserCodeExists(string Code)
         {
             return _context.Users.Any(e => e.Code == Code);
         }
 
+        /// <summary>
+        /// 获取部门列表
+        /// </summary>
+        /// <param name="selectedDepartment"></param>
         protected void DepartmentDropDownList(object selectedDepartment = null)
         {
             var deparmentQuery = _context.Departments.Where(d => d.IsDeleted == 0);
@@ -378,6 +387,10 @@ namespace RBAC_CoreMVC.Controllers
             ViewData["DepartmentId"] = new SelectList(deparmentQuery, "Id", "Name", selectedDepartment);
         }
 
+        /// <summary>
+        /// 获取部门列表，首行值为null
+        /// </summary>
+        /// <param name="selectedDepartment"></param>
         protected void DepartmentDropDownListFirstNull(object selectedDepartment = null)
         {
             List<SelectListItem> list = _context.Departments.Where(m => m.IsDeleted == 0)
@@ -391,6 +404,10 @@ namespace RBAC_CoreMVC.Controllers
             ViewData["DepartmentId"] = new SelectList(list, "Value", "Text", selectedDepartment);
         }
 
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <param name="user"></param>
         private void GetRoleList(User user)
         {
             var roles = _context.Roles.Where(m => m.IsDeleted == 0);
@@ -410,6 +427,11 @@ namespace RBAC_CoreMVC.Controllers
             ViewData["RoleList"] = roleList;
         }
 
+        /// <summary>
+        /// 更新用户角色
+        /// </summary>
+        /// <param name="selectedRole"></param>
+        /// <param name="userToUpdate"></param>
         private void UpdataUserRoles(string[] selectedRole, User userToUpdate)
         {
             if (selectedRole == null || selectedRole.Length == 0)

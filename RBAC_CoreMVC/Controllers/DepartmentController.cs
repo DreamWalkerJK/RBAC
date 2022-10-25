@@ -195,11 +195,21 @@ namespace RBAC_CoreMVC.Controllers
             return _context.Departments.Any(e => e.Id == id);
         }
 
+        /// <summary>
+        /// 查询部门编码是否存在
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <returns></returns>
         private bool DepartmentCodeExists(string Code)
         {
             return _context.Departments.Any(e => e.Code == Code);
         }
 
+        /// <summary>
+        /// 上级部门下拉列表，首行值为null
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="selectedParent"></param>
         protected void DepartmentsParentDropDownListFirstNull(string id, object selectedParent = null)
         {
             List<SelectListItem> list = _context.Departments.Where(m => m.Id != id && m.IsDeleted == 0)
@@ -213,6 +223,10 @@ namespace RBAC_CoreMVC.Controllers
             ViewData["ParentId"] = new SelectList(list, "Value", "Text", selectedParent);
         }
 
+        /// <summary>
+        /// 部门管理人下拉列表，首行值为null
+        /// </summary>
+        /// <param name="selectedUser"></param>
         protected void DepartmentsManagerDropDownListFirstNull(object selectedUser = null)
         {
             List<SelectListItem> list = _context.Users.Where(u => u.IsDeleted == 0)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using RBAC_CoreMVC.Models;
 
@@ -16,7 +18,7 @@ namespace RBAC_CoreMVC.Data
         {
             IServiceCollection services = new ServiceCollection();
             services.AddDbContext<RBACContext>(options => 
-                options.UseNpgsql("User ID=Test;Password=DreamWalker_JK;Host=localhost;Port=5432;Database=RBAC;Pooling=true;"));
+                options.UseNpgsql(AppSettingsHelper.Configuration.GetConnectionString("RBACContext")));
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
         }
@@ -39,5 +41,18 @@ namespace RBAC_CoreMVC.Data
             var context = services.GetService<RBACContext>();
             return context;
         }
+    }
+
+    public class AppSettingsHelper
+    {
+        public static IConfiguration Configuration { get; set; }
+        static AppSettingsHelper()
+        {
+            //ReloadOnChange = true 当appsettings.json被修改时重新加载            
+            Configuration = new ConfigurationBuilder()
+                .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })
+                .Build();
+        }
+
     }
 }

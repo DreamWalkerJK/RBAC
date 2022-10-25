@@ -219,11 +219,21 @@ namespace RBAC_CoreMVC.Controllers
             return _context.Menus.Any(e => e.Id == id);
         }
 
+        /// <summary>
+        /// 检查Menu编码是否存在
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <returns></returns>
         private bool MenuCodeExists(string Code)
         {
             return _context.Menus.Any(e => e.Code == Code);
         }
 
+        /// <summary>
+        /// 上级功能的下拉列表，首行值为null
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="selectedParent"></param>
         protected void MenuParentDropDownListFirstNull(string id, object selectedParent = null)
         {
             List<SelectListItem> list = _context.Menus.Where(m => m.Id != id && m.Type == 0)
@@ -237,6 +247,10 @@ namespace RBAC_CoreMVC.Controllers
             ViewData["ParentId"] = new SelectList(list, "Value", "Text", selectedParent);
         }
 
+        /// <summary>
+        /// Menu类型列表
+        /// </summary>
+        /// <param name="selectedType"></param>
         protected void MenuTypeDropDownList(object selectedType = null)
         {
             List<SelectListItem> list = new List<SelectListItem>();

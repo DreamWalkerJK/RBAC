@@ -214,12 +214,21 @@ namespace RBAC_CoreMVC.Controllers
         {
             return _context.Roles.Any(e => e.Id == id);
         }
-
+        
+        /// <summary>
+        /// 检查角色编码是否存在
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         private bool RoleCodeExists(string code)
         {
             return _context.Roles.Any(r => r.Code == code);
         }
 
+        /// <summary>
+        /// 获取类型为导航的Menu列表
+        /// </summary>
+        /// <param name="role"></param>
         private void GetTypeMenuList(Role role)
         {
             var menus = _context.Menus.Where(m => m.IsDeleted == 0
@@ -241,6 +250,11 @@ namespace RBAC_CoreMVC.Controllers
             ViewData["MenuList"] = menuList;
         }
 
+        /// <summary>
+        /// 更新角色的可控制Menu
+        /// </summary>
+        /// <param name="selectedMenu"></param>
+        /// <param name="roleToUpdate"></param>
         private void UpdataRoleMenus(string[] selectedMenu, Role roleToUpdate)
         {
             if (selectedMenu == null || selectedMenu.Length == 0)

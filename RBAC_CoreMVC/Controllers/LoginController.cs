@@ -54,6 +54,7 @@ namespace RBAC_CoreMVC.Controllers
                     ViewBag.CurrentUser = string.Format("{0}({1})", user.Name, user.Code);
                     ViewBag.CurrentUserId = user.Id;
 
+                    // 获取用户角色相对应的Menu
                     var menuDtos = new List<MenuDto>();
                     var roleIds = user.UserRoles.Select(u => u.RoleId).ToList();
 

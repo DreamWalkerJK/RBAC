@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace RBAC_CoreMVC.Models
 {
+    /// <summary>
+    /// 分类类
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PagedList<T> : List<T>
     {
         public int pageIndex { get; private set; }

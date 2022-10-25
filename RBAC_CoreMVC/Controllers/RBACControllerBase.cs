@@ -21,7 +21,9 @@ namespace RBAC_CoreMVC.Controllers
         {
             var sqlContext = DbContextService.GetContext();
 
+            // 获取当前请求controller名
             var controllerName = ControllerContext.HttpContext.Request.RouteValues["controller"].ToString();
+            var actionName = ControllerContext.HttpContext.Request.RouteValues["action"].ToString();
 
             var user = SessionHelper.GetSession(HttpContext.Session, "CurrentUser");
             var userId = SessionHelper.GetSession(HttpContext.Session, "CurrentUserId");
@@ -29,12 +31,14 @@ namespace RBAC_CoreMVC.Controllers
             ViewBag.CurrentUser = user;
             ViewBag.CurrentUserId = userId;
 
+            // 登录检查
             if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(userId))
             {
                 context.Result = new RedirectResult("/Login/Index");
                 return;
             }
 
+            // 权限检查
             if (!string.IsNullOrEmpty(userId) && !controllerName.Equals("Login"))
             {
                 var menuDtos = new List<MenuDto>();
@@ -62,7 +66,7 @@ namespace RBAC_CoreMVC.Controllers
                 }
 
                 bool isRight = false;
-                if (controllerName.Equals("Home"))
+                if (controllerName.Equals("Home") || actionName.Equals("ChangeMyUserInfo"))
                 {
                     isRight = true;
                 }
